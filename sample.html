@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Basic ThreeJS Functions</title>
+	<style>
+		body{
+			margin: 0;
+			overflow: hidden;
+		}
+		canvas{
+			background: red;
+		}
+	</style>
+</head>
+<body>
+
+	<canvas id="myCanvas"></canvas>
+
+	<script src="lib/three.js"></script>
+	<script>
+		var renderer = new THREE.WebGLRenderer({
+			canvas: document.getElementById('myCanvas'),
+			antialias: true
+		});
+		renderer.setClearColor(0x00ff00); //green
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight); // set canvas size same as screen
+
+		/* To draw something on the renderer we need to pass a camera and a scene parameter */
+		// PerspectiveCamera(field_of_view, width/height or the Aspect Ratio, near_plane, far_plane)
+		var camera = new THREE.PerspectiveCamera(35, window.innerWidth/window.innerHeight, 0.1, 3000);
+
+		var scene = new THREE.Scene();
+
+		// Add Ambient Light with params color and intensity
+		var light = new THREE.AmbientLight(0xffffff, 0.5);
+		scene.add(light);
+
+
+		// Add Point Light with params color and intensity
+		var plight = new THREE.PointLight(0xffffff, 0.5);
+		scene.add(plight)
+
+		var geometry = new THREE.BoxGeometry(100, 100, 100);
+		var material = new THREE.MeshLambertMaterial({
+			color: 0xF3FFE2
+		});
+
+		// Mesh takes up the geometry of the object and the material to be used as parameters
+		var mesh = new THREE.Mesh(geometry, material);
+		mesh.position.set(0, 0, -1000);
+
+		scene.add(mesh);
+
+		requestAnimationFrame(render);
+
+		function render() {
+			mesh.rotation.x += 0.01;
+			mesh.rotation.y += 0.01;
+			renderer.render(scene, camera);
+			requestAnimationFrame(render);
+		}
+
+
+	</script>
+</body>
+</html>
